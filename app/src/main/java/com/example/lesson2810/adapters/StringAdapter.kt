@@ -1,13 +1,10 @@
-package com.example.lesson2810
+package com.example.lesson2810.adapters
 
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class StringAdapter: RecyclerView.Adapter<StringAdapter.StringViewHolder>(){
-
     private val list = mutableListOf<String>()
 
     inner class StringViewHolder(

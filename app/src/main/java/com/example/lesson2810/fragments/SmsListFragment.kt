@@ -1,27 +1,26 @@
 package com.example.lesson2810.fragments
 
 import android.Manifest.permission.READ_SMS
-import android.content.ContentResolver
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.Telephony
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.lesson2810.MessageViewModel
+import com.example.lesson2810.adapters.ChatSenderAdapter
+import com.example.lesson2810.viewModels.MessageViewModel
 import com.example.lesson2810.R
-import com.example.lesson2810.StringAdapter
-import com.example.lesson2810.databinding.FragmentThirdBinding
+import com.example.lesson2810.data.ChatMessageEntry
+import com.example.lesson2810.databinding.FragmentSmsSenderListBinding
 
-class ThirdFragment : Fragment(R.layout.fragment_third) {
-    private val binding: FragmentThirdBinding by viewBinding()
+class SmsListFragment : Fragment(R.layout.fragment_sms_sender_list) {
+    private val binding: FragmentSmsSenderListBinding by viewBinding()
     private val messageViewModel: MessageViewModel by viewModels()
-    private val stringAdapter = StringAdapter()
-    private val smsList: MutableList<String> = mutableListOf()
+    private val chatSenderAdapter = ChatSenderAdapter(::onChatClick)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,11 +29,17 @@ class ThirdFragment : Fragment(R.layout.fragment_third) {
         bindDataRequest()
     }
 
+    private fun onChatClick(chatMessageEntry: ChatMessageEntry) {
+        val direction = SmsListFragmentDirections.actionSenderListToSenderMessageListFragment(
+            messages = chatMessageEntry
+        )
+        findNavController().navigate(direction)
+    }
+
     private fun bindDataRequest() {
         messageViewModel.liveData.observe(viewLifecycleOwner) {
-            stringAdapter.submitList(it)
+            chatSenderAdapter.submitList(it)
         }
-        messageViewModel.makeDataRequest(smsList)
     }
 
     private fun initRecycler() {
@@ -44,33 +49,9 @@ class ThirdFragment : Fragment(R.layout.fragment_third) {
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            this.adapter = this@ThirdFragment.stringAdapter
+            this.adapter = this@SmsListFragment.chatSenderAdapter
         }
     }
-
-    private fun readSMS() {
-        val contentResolver: ContentResolver = requireActivity().contentResolver
-        val cursor = contentResolver.query(
-            Telephony.Sms.CONTENT_URI,
-            null,
-            null,
-            null,
-            null
-        )
-        if (cursor?.moveToFirst() == true) {
-            do {
-                val address = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS)
-                )
-                val body = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)
-                )
-                smsList.add("Sender: $address\nMessage: $body");
-            } while (cursor.moveToNext());
-        }
-        cursor?.close()
-    }
-
 
     private fun checkPermissions() {
         val permission = ContextCompat.checkSelfPermission(
@@ -82,14 +63,11 @@ class ThirdFragment : Fragment(R.layout.fragment_third) {
                 ActivityResultContracts.RequestPermission()
             ) {
                 if (it) {
-                    readSMS()
-                } else {
-
+                    messageViewModel.loadMessages(requireContext().contentResolver)
                 }
             }.launch(READ_SMS)
-        } else{
-            readSMS()
+        } else {
+            messageViewModel.loadMessages(requireContext().contentResolver)
         }
     }
-
 }

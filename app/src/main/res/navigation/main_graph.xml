@@ -7,19 +7,19 @@
     <fragment
         android:id="@+id/firstFragment"
         android:name="com.example.lesson2810.fragments.FirstFragment"
-        android:label="FirstFragment" >
+        android:label="FirstFragment">
         <action
             android:id="@+id/action_firstFragment_to_secondFragment"
             app:destination="@id/secondFragment">
             <argument
                 android:name="data_count"
-                app:argType="integer"
-                android:defaultValue="1"/>
+                android:defaultValue="1"
+                app:argType="integer" />
         </action>
 
         <action
             android:id="@+id/action_firstFragment_to_thirdFragment"
-            app:destination="@id/thirdFragment" />
+            app:destination="@id/smsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
@@ -27,11 +27,27 @@
         android:label="SecondFragment">
         <argument
             android:name="data_count"
-            app:argType="integer"
-            android:defaultValue="1"/>
+            android:defaultValue="1"
+            app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/thirdFragment"
-        android:name="com.example.lesson2810.fragments.ThirdFragment"
-        android:label="ThirdFragment" />
+        android:id="@+id/smsListFragment"
+        android:name="com.example.lesson2810.fragments.SmsListFragment"
+        android:label="SmsListFragment">
+        <action
+            android:id="@+id/action_senderList_to_senderMessageListFragment"
+            app:destination="@id/senderMessageListFragment">
+            <argument
+                android:name="messages"
+                app:argType="com.example.lesson2810.data.ChatMessageEntry" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/senderMessageListFragment"
+        android:name="com.example.lesson2810.fragments.SenderMessageListFragment"
+        android:label="SenderMessageListFragment">
+        <argument
+            android:name="messages"
+            app:argType="com.example.lesson2810.data.ChatMessageEntry" />
+    </fragment>
 </navigation>

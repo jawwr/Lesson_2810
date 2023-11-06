@@ -8,12 +8,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lesson2810.R
-import com.example.lesson2810.SecondViewModel
-import com.example.lesson2810.StringAdapter
+import com.example.lesson2810.viewModels.SecondViewModel
+import com.example.lesson2810.adapters.StringAdapter
 import com.example.lesson2810.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
-
     private val args: SecondFragmentArgs by navArgs()
     private val adapter = StringAdapter()
     private val binding: FragmentSecondBinding by viewBinding()

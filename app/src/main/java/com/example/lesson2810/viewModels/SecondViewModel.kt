@@ -1,11 +1,10 @@
-package com.example.lesson2810
+package com.example.lesson2810.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SecondViewModel: ViewModel() {
-
+class SecondViewModel : ViewModel() {
     private val _dataResponse = MutableLiveData<List<String>>()
     val dataResponse: LiveData<List<String>>
         get() = _dataResponse
