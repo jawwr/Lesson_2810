@@ -9,7 +9,6 @@ import com.example.lesson2810.databinding.ChatMessageItemBinding
 class ChatSenderAdapter(
     private val onItemClick: (ChatMessageEntry) -> Unit
 ) : RecyclerView.Adapter<ChatSenderAdapter.ChatMessageViewHolder>() {
-
     private val messageEntries = mutableListOf<ChatMessageEntry>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatMessageViewHolder {

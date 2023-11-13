@@ -5,8 +5,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson2810.data.ChatMessageEntry
 
-class ChatMessageAdapter : RecyclerView.Adapter<ChatMessageAdapter.ChatMessageViewHolder>() {
-    lateinit var chatEntry: ChatMessageEntry
+class ChatMessageAdapter(
+    private val chatEntry: ChatMessageEntry
+) : RecyclerView.Adapter<ChatMessageAdapter.ChatMessageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatMessageViewHolder {
         val textView = TextView(parent.context)
         return ChatMessageViewHolder(textView)
